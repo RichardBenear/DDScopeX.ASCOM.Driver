@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DDScopeX ASCOM Telescope Driver</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 2em;
+            background-color: #fdfdfd;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #004080;
+        }
+
+        pre {
+            background: #eee;
+            padding: 1em;
+            overflow-x: auto;
+        }
+
+        code {
+            font-family: Consolas, monospace;
+            background: #f4f4f4;
+            padding: 2px 4px;
+        }
+
+        ul {
+            line-height: 1.6em;
+        }
+
+        hr {
+            margin: 2em 0;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>ASCOM DDScopeX Telescope Driver</h1>
+
+    <p>
+        This repository contains source code and an <strong>ASCOM-compatible Telescope driver</strong> for the
+        <a href="https://github.com/RichardBenear/DDScopeXv4_plugin_for_OnStepXv10.25">DDScopeX</a> (Direct Drive TeleScope) telescope.
+        It uses <strong>TCP/IP communication</strong> to connect to the DDScopeX firmware and hardware, enabling control from ASCOM clients such as Cartes du Ciel, Stellarium, and NINA.
+    </p>
+
+    <p>
+        This ASCOM driver was developed in C# with Visual Studio 2022 using the ASCOM 7 generator.
+        A Setup Form provides the ability to connect and set or load some telescope parameters.
+    </p>
+
+    <p>Since DDScopeX firmware is a plugin to the base <a href="https://github.com/hjd1964/OnStepX">OnStepX</a> firmware, it should work with other LX200-compatible telescopes, especially those based on OnStepX, though not tested extensively with them.</p>
+
+    <p>
+        Because the connection is wireless via TCP/IP, either the
+        <a href="https://github.com/RichardBenear/LX200WifiBridge">DDScopeX LX200 Bridge</a>
+        or the OnStepX <a href="https://github.com/hjd1964/SmartWebServer">Smart Web Server</a> is required.
+    </p>
+
+    <p>
+        The official OnStepX ASCOM driver executable is available
+        <a href="http://stellarjourney.com/?r=site/software_telescope">here</a>, but this driver was developed independently to explore ASCOM development and allow future extensibility.
+    </p>
+
+    <hr>
+
+    <h2>Features</h2>
+    <ul>
+        <li>TCP/IP connection to telescope controller</li>
+        <li>Set slewing at configurable speeds (0.75x, 1x, 1.5x, 2x)</li>
+        <li>Get or Set Site Latitude, Longitude, and Elevation</li>
+        <li>ASCOM Platform 6.5+ compatible</li>
+        <li>Optional setting of Telescope Date, Time, and UTC Offset</li>
+        <li>Sync'ing support</li>
+        <li>Optional trace logging of messages</li>
+    </ul>
+
+    <hr>
+
+    <h2>ASCOM Methods Used</h2>
+    <ul>
+        <li>AbortSlew</li>
+        <li>AlignmentMode (Get)</li>
+        <li>Declination (Get)</li>
+        <li>RightAscension (Get)</li>
+        <li>SiteElevation (Get/Set)</li>
+        <li>SiteLatitude (Get/Set)</li>
+        <li>SiteLongitude (Get/Set)</li>
+        <li>SlewToCoordinates / Async</li>
+        <li>SlewToTarget / Async</li>
+        <li>SlewToAltAz / Async</li>
+        <li>Slewing (Get)</li>
+        <li>SyncToCoordinates</li>
+        <li>SyncToTarget</li>
+        <li>TargetDeclination / RightAscension (Set)</li>
+        <li>Tracking (Get/Set)</li>
+    </ul>
+
+    <hr>
+
+    <h2>LX200 Command Support</h2>
+    <ul>
+        <li><code>:MS#</code> — Slew to coordinates / target</li>
+        <li><code>:SG</code>, <code>:SC</code>, <code>:SL</code> — Set UTC offset, date, time</li>
+        <li><code>:St</code>, <code>:Sg</code>, <code>:Sv</code> — Set site coordinates</li>
+        <li><code>:Gt</code>, <code>:Gg</code>, <code>:Gv</code> — Get site coordinates</li>
+        <li><code>:GR#</code>, <code>:GD#</code> — Get RA/DEC</li>
+        <li><code>:Sr</code>, <code>:Sd</code> — Set target RA/DEC</li>
+        <li><code>:SX93,n</code> — Set slew rate</li>
+        <li><code>:Q#</code> — Abort slew</li>
+        <li><code>:CM#</code> — Sync to target</li>
+        <li><code>:GT#</code>, <code>:Te</code>, <code>:Td</code> — Tracking enable/disable</li>
+    </ul>
+
+    <hr>
+
+    <h2>Repository Structure</h2>
+<pre>
+DDScopeX-ASCOM-Driver/
+├── DDScopeX.csproj  
+├── TelescopeDriver.cs  
+├── TelescopeHardware.cs  
+├── SetupDialogForm.cs  
+├── SetupDialogForm.Designer.cs  
+├── Properties/
+│   └── AssemblyInfo.cs  
+├── Installer/
+│   └── DDScopeX_ASCOM_Installer.iss  
+├── LICENSE  
+├── README.md  
+└── ddscopex_screenshot.png
+</pre>
+
+    <hr>
+
+    <h2>Driver Screenshot</h2>
+    <p>Below is a screenshot of the configuration Dialog Form for the DDScope ASCOM driver:</p>
+    <p><img src="ddscopex_screenshot.png" alt="DDScopeX Setup Screenshot" width="600"></p>
+
+    <hr>
+
+    <h2>Installation</h2>
+
+    <h3>1. Requirements</h3>
+    <ul>
+        <li>Windows 10 or later</li>
+        <li><a href="https://dotnet.microsoft.com/en-us/download/dotnet-framework">.NET Framework 4.8+</a></li>
+        <li><a href="https://ascom-standards.org/">ASCOM Platform 6.5+</a></li>
+    </ul>
+
+    <h3>2. Install the Driver</h3>
+    <ol>
+        <li>Run the <code>DDScope_ASCOM_Installer.exe</code></li>
+        <li>This will register the driver with the ASCOM platform</li>
+        <li>Configure the driver from any ASCOM client</li>
+    </ol>
+
+    <hr>
+
+    <h2>Setup & Configuration</h2>
+    <ol>
+        <li>Launch your ASCOM client (Stellarium, Cartes du Ciel, NINA)</li>
+        <li>Select <strong>DDScopeX Telescope</strong> as the driver</li>
+        <li>Click <strong>Properties</strong> to open the configuration dialog</li>
+        <li>Set IP and port, and connect/load data</li>
+        <li>Adjust slew speed and site info as needed</li>
+        <li>Enable time synchronization and/or logging</li>
+        <li>Click <strong>OK</strong> to save and close</li>
+    </ol>
+
+    <hr>
+
+    <h2>OnStep Resources</h2>
+    <p><a href="https://groups.io/g/onstep/wiki/home">OnStep Group Wiki</a></p>
+
+    <hr>
+
+    <h2>License</h2>
+    <p>This project is licensed under the MIT License. See <code>LICENSE</code> for details.</p>
+
+    <hr>
+
+    <h2>Author</h2>
+    <p>Richard Benear, 7/2025</p>
+
+</body>
+</html>

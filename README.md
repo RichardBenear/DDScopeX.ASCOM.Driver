@@ -92,7 +92,7 @@ DDScopeX-ASCOM-Driver/
 
 Below is a screenshot of the configuration Dialog Form for the DDScope ASCOM driver:
 
-![DDScope ASCOM Setup Screenshot](ddscopex_screenshot.png)
+![DDScope ASCOM Setup Screenshot](DDScopeASCOMDriverForm.png)
 
 ---  
 

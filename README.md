@@ -144,4 +144,10 @@ This project is licensed under the MIT License. See [LICENSE](LICENSE.txt) for d
 ## Author
 Richard Benear 7/2025
 
+## Book: BUILD A DIRECT DRIVE TELESCOPE: A Comprehensive Guide
+Book Available on Amazon [Here](https://a.co/d/0cUrQWGB) 
+
+<img src="./DDScopeXBookFront.jpg" width="300" alt="DDScopeX Book Front">
+
+
 ---
